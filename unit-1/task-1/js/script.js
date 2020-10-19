@@ -18,7 +18,7 @@ map(list, createList(arr));
 
 function createList (arr) {
 
-    let sortListItem = arr.sort().map((element) => {
+    return arr.sort().map((element) => {
 
         let listItem = document.createElement('li');
         listItem.classList.add('list-group-item');
@@ -27,5 +27,4 @@ function createList (arr) {
         return listItem;
     });
 
-    return sortListItem;
 };

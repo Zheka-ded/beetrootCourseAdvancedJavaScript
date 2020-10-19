@@ -67,17 +67,13 @@ usersSelect.onchange = function () {
     // фильтруем массив по выбранному option
     let fiterAge = users.filter((element) => element.age === this.value);
 
-    // создаем список
-    let ulOut = document.createElement('ul');
-
     // заполняем список элементами списка
     fiterAge.forEach((element) => {
-        let liItem = document.createElement('li');
-        liItem.textContent = element.name;
-        ulOut.append(liItem);
+        let userName = document.createElement('p');
+        userName.textContent = element.name;
+        res.append(userName);
     })
 
-    res.append(ulOut);
 };
 
 // удаление/очистка предыдущего ывода
