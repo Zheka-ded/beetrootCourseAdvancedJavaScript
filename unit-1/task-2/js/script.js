@@ -53,8 +53,8 @@ const createOption = (out, list) => {
         optionItem.textContent = element;
 
         out.append(optionItem);
-    })
-}
+    });
+};
 
 // запускаем функцию создания option
 createOption(usersSelect, users);
@@ -72,11 +72,11 @@ usersSelect.onchange = function () {
         let userName = document.createElement('p');
         userName.textContent = element.name;
         res.append(userName);
-    })
+    });
 
 };
 
 // удаление/очистка предыдущего ывода
 const removeElem = (elem) => {
     while (elem.firstChild) elem.removeChild(elem.firstChild);
-}
+};
