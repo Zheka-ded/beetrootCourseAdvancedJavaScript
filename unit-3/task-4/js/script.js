@@ -25,10 +25,11 @@ function bind(fn, args) {
   //   if(typeof letter === 'number' && letter < 4) firstArgs.push(letter);
 
   // }
-  
-  let x = [arguments[2], arguments[3], arguments[4]];
 
-  x = x.filter(elem => elem !== undefined);
+  // // Твое решение
+  // let outerArgs = [].slice.call(arguments, 2);
+  
+  let firstArgs = [arguments[2], arguments[3], arguments[4]].filter(elem => elem !== undefined);
 
   return function (){
 
@@ -39,15 +40,15 @@ function bind(fn, args) {
     //   if(typeof letter === 'number' && letter < 4) secondArgs.push(letter)
     // }
 
-    // let arghtpfgdsd = [...firstArgs, ...secondArgs];
+    // // Твое решение
+    // const innerArgs = [].slice.call(arguments);
+    // const allArgs = outerArgs.concat(innerArgs);
     
-    let y = [arguments[0], arguments[1], arguments[2]];
+    let secondArgs = [arguments[0], arguments[1], arguments[2]].filter(elem => elem !== undefined);
     
-    y = y.filter(elem => elem !== undefined)
-    
-    let arghtpfgdsd = [...x, ...y];
+    let allArgs = [...firstArgs, ...secondArgs];
 
-    return fn.apply(args, [...arghtpfgdsd])
+    return fn.apply(args, allArgs);
   };
 
 };
