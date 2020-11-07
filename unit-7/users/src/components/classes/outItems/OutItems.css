@@ -1,0 +1,9 @@
+.items{
+    display: flex;
+    flex-direction: column;
+}
+
+.items__user-name{
+    font-size: 18px;
+    font-weight: 600;
+}
