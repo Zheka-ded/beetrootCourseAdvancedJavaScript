@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css?family=Ubuntu:400,500");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Ubuntu", sans-serif;
+}
+input,
+button {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  outline: none;
+}
+.container {
+  max-width: 400px;
+  margin-left: 2rem;
+  margin-top: 2rem;
+}
+
+input {
+  border: 1px solid lightslategray;
+  background: white;
+  padding: 6px 3px;
+  flex: 1;
+}
+button {
+  background: lightslategray;
+  color: white;
+  cursor: pointer;
+  text-transform: uppercase;
+  padding: 0 5px;
+}
+button:hover {
+  background: lightseagreen;
+}

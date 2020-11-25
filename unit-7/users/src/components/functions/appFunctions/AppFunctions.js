@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import SearchUserFunc from '../searchUserFunc/SearchUserFunc';
 import OutItemsFunc from '../outItemsFunc/OutItemsFunc';

@@ -1,0 +1,9 @@
+.form-box {
+    padding: 1rem 10px;
+    background: hsl(0, 0%, 89%);
+    width: 320px;
+    margin-bottom: 2rem;
+  }
+  .form-box__item {
+    display: flex;
+  }
