@@ -1,0 +1,21 @@
+{
+  "parserOptions": {
+    // "ecmaVersion": 2018
+    "ecmaVersion": "2018"
+  },
+
+  "rules": {
+    "valid-typeof": "off",
+    "no-console": "off",
+    "no-redeclare": "off",
+    "no-debugger": "off"
+  },
+
+  "extends": [
+    "eslint:recommended", "react-app"
+  ],
+
+  "env": {
+    "browser": true
+  }
+}
