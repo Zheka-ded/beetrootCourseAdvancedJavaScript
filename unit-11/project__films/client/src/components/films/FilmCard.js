@@ -25,7 +25,7 @@ const FilmCard = ({film}) => {
                 </div>
             ) : (
                 <div className="description">
-                    {film?.description}
+                    <p>{film?.description}</p>
                 </div>
             )}
 
