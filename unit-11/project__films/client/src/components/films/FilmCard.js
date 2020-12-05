@@ -9,7 +9,7 @@ const FilmCard = ({film}) => {
      */
     const [eyeOn, setEyeOn] = useState(true);
 
-    const toggleDescription = eye => eye(!eyeOn);
+    const toggleDescription = item => item(!eyeOn);
     const eyeCls = eyeOn ? '' : 'slash';
 
     return (
