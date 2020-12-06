@@ -4,6 +4,7 @@ import {films} from '../data'
 import {orderBy} from 'lodash'
 import FilmsForm from './forms/FilmsForm'
 import TopNavigation from './TopNavigation'
+import {generate as id} from 'shortid'
 
 const AppContext = React.createContext()
 export {AppContext}
@@ -12,11 +13,41 @@ export default class App extends Component {
     state = {
         films: [],
         showAddForm: false,
+        selectedFilm: {}
     }
 
-    showAddForm = e => this.setState({showAddForm: true})
+    selectFilmForEdit = selectedFilm => {
+        this.setState({
+            selectedFilm,
+            showAddForm: true,
+        })
+    }
 
-    hideAddForm = e => this.setState({showAddForm: false})
+    saveFilm = film => film._id ? this.updateFilm(film) : this.addFilm(film)
+
+    addFilm = film => 
+        this.setState(({films, showAddForm}) => ({
+            films: this.sortFilms([...films, {...film, _id: id()}]),
+            showAddForm: false,
+        }))
+
+    updateFilm = film => 
+        this.setState(({films, showAddForm}) => ({
+            films: this.sortFilms(
+                films.map(item => item._id === film._id ? film : item )
+            ), 
+            showAddForm: false
+        }))
+
+    showAddForm = e => this.setState({
+        showAddForm: true,
+        selectedFilm: {}
+    })
+
+    hideAddForm = e => this.setState({
+        showAddForm: false,
+        selectedFilm: {}
+    })
 
     componentDidMount() {
         this.setState({
@@ -36,20 +67,41 @@ export default class App extends Component {
 
     sortFilms = films => orderBy(films, ['featured', 'title'], ['desc', 'asc'])
 
+    deleteFilm = film => 
+        this.setState(({films, selectedFilm, showAddForm}) => ({
+            films: films.filter(item => item._id !== film._id),
+            selectedFilm: {},
+            showAddForm: false,
+        }))
+
     render(){
-        const {films, showAddForm} = this.state
+        const {films, showAddForm, selectedFilm} = this.state
         const numCol = showAddForm ? 'ten' : 'sixteen'
 
         return(
-            <AppContext.Provider value={ {toggleFeatured: this.toggleFeatured,} }>
+            <AppContext.Provider value={{
+                toggleFeatured: this.toggleFeatured,
+                editFilm: this.selectFilmForEdit,
+                deleteFilm: this.deleteFilm,
+            }}>
                 <div className="ui container mt-3">
 
-                    <TopNavigation />
+                    <TopNavigation showAddForm={this.showAddForm} />
 
-                    <FilmsForm/>
-                    <hr/>
-                    <br/>
-                    <FilmsList films={films} />
+                    <div className="ui stackable grid">
+                        {this.state.showAddForm && (
+                            <div className="six wide column">
+                                <FilmsForm hideAddForm={this.hideAddForm} 
+                                            submit={this.saveFilm}
+                                            film={selectedFilm} />
+                            </div>
+                        )}
+                        
+                        <div className={`${numCol} wide column`}>
+                            <FilmsList films={films} />
+                        </div>
+                    </div>
+
                 </div>
             </AppContext.Provider>
         )
