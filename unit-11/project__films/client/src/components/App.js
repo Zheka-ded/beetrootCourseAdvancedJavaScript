@@ -5,6 +5,9 @@ import {orderBy} from 'lodash'
 import FilmsForm from './forms/FilmsForm'
 import TopNavigation from './TopNavigation'
 import {generate as id} from 'shortid'
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!
+import RegistrationForm from './forms/RegistrationForm'
+import LoginForm from './forms/LoginForm'
 
 const AppContext = React.createContext()
 export {AppContext}
@@ -84,7 +87,14 @@ export default class App extends Component {
                 editFilm: this.selectFilmForEdit,
                 deleteFilm: this.deleteFilm,
             }}>
+
                 <div className="ui container mt-3">
+                    
+                    <RegistrationForm />
+                    <br/>
+                    <hr/>
+                    <br/>
+                    <LoginForm />
 
                     <TopNavigation showAddForm={this.showAddForm} />
 

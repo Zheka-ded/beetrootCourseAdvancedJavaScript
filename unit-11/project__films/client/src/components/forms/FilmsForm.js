@@ -89,7 +89,7 @@ export default class FilmsForm extends Component {
 
         return(
             <form className="ui form" onSubmit={this.handleSubmit}>
-                <div className="ui  grid">
+                <div className="ui grid">
                     <div className="twelve wide column">
                         <div className={errors.title ? 'field error' : 'field'}>
                             <label>Film title</label>
