@@ -17,6 +17,7 @@ export default class FilmsForm extends Component {
     state = {
         data: initialData,
         errors: {},
+        isLoading: false,
     }
 
     componentDidMount(){
@@ -48,10 +49,17 @@ export default class FilmsForm extends Component {
     handleSubmit = e => {
         e.preventDefault()
         const errors = this.validate(this.state.data)
+        // const errors = {}
+
         this.setState({errors})
 
         if(Object.keys(errors).length === 0) {
+            this.setState({ isLoading: true })
             this.props.submit(this.state.data)
+                .catch(error => this.setState({
+                    errors: error.response.data.errors,
+                    isLoading: false,
+                }))
         }
         console.log(this.state.data)
     }
@@ -85,10 +93,11 @@ export default class FilmsForm extends Component {
 
     render() {
 
-        const {data, errors} = this.state;
+        const {data, errors, isLoading} = this.state;
+        const formClassName = isLoading ? 'ui form loading' : 'ui form'
 
         return(
-            <form className="ui form" onSubmit={this.handleSubmit}>
+            <form className={formClassName} onSubmit={this.handleSubmit}>
                 <div className="ui grid">
                     <div className="twelve wide column">
                         <div className={errors.title ? 'field error' : 'field'}>

@@ -2,10 +2,12 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:4000",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.2.2",
+    "axios": "^0.21.0",
     "lodash": "^4.17.20",
     "prettier": "^2.2.1",
     "prop-types": "^15.7.2",

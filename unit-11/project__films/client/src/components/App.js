@@ -1,13 +1,19 @@
 import React, {Component} from 'react'
 import FilmsList from './films'
-import {films} from '../data'
-import {orderBy} from 'lodash'
+import {find, orderBy} from 'lodash'
+import api from '../api'
 import FilmsForm from './forms/FilmsForm'
 import TopNavigation from './TopNavigation'
-import {generate as id} from 'shortid'
+// import {generate as id} from 'shortid'
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!
 import RegistrationForm from './forms/RegistrationForm'
 import LoginForm from './forms/LoginForm'
+// import { films } from '../data'
+
+// GET /api/films/ - get all films
+// POST /api/films/ - create film
+// PUT /api/films/_id - update film
+// DELETE /api/films/_id - delete film
 
 const AppContext = React.createContext()
 export {AppContext}
@@ -28,19 +34,23 @@ export default class App extends Component {
 
     saveFilm = film => film._id ? this.updateFilm(film) : this.addFilm(film)
 
-    addFilm = film => 
-        this.setState(({films, showAddForm}) => ({
-            films: this.sortFilms([...films, {...film, _id: id()}]),
-            showAddForm: false,
-        }))
+    addFilm = filmData => 
+        api.films.create(filmData).then(film =>
+            this.setState(({films, showAddForm}) => ({
+                films: this.sortFilms([...films, {...film}]),
+                showAddForm: false,
+            }))
+        )
 
-    updateFilm = film => 
-        this.setState(({films, showAddForm}) => ({
-            films: this.sortFilms(
-                films.map(item => item._id === film._id ? film : item )
-            ), 
-            showAddForm: false
-        }))
+    updateFilm = filmData =>
+        api.films.update(filmData).then(film =>
+            this.setState(({films, showAddForm}) => ({
+                films: this.sortFilms(
+                    films.map(item => (item._id === film._id ? film : item))
+                ),
+                showAddForm: false,
+            }))
+        )
 
     showAddForm = e => this.setState({
         showAddForm: true,
@@ -53,29 +63,25 @@ export default class App extends Component {
     })
 
     componentDidMount() {
-        this.setState({
+        api.films.fetchAll().then(films => this.setState({
             films: this.sortFilms(films),
-        })
+        }))
     }
 
-    toggleFeatured = id => (
-        this.setState( ({films}) => ({
-            films: this.sortFilms(
-                films.map(item => 
-                    item._id === id ? {...item, featured: !item.featured} : item,
-                )
-            )
-        }))
-    )
+    toggleFeatured = id => {
+        const film = find(this.state.films, {_id: id})
+
+        return this.updateFilm({...film, featured: !film.featured})
+    }
 
     sortFilms = films => orderBy(films, ['featured', 'title'], ['desc', 'asc'])
 
     deleteFilm = film => 
-        this.setState(({films, selectedFilm, showAddForm}) => ({
-            films: films.filter(item => item._id !== film._id),
-            selectedFilm: {},
-            showAddForm: false,
-        }))
+        api.films.delete(film).then(() => 
+            this.setState(({films}) => ({
+                films: this.sortFilms(films.filter(item => item._id !== film._id))
+            }))
+        )
 
     render(){
         const {films, showAddForm, selectedFilm} = this.state

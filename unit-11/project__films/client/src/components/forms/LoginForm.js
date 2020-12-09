@@ -7,12 +7,12 @@ export default function LoginForm () {
             <div className="ui grid">
                 <div className="field">
                     <label>Email</label>
-                    <input type="email"  name="email" id="email" placeholder="Email"/>
+                    <input type="email"  name="email" id="login_email" placeholder="Email"/>
                 </div>
                 
                 <div className="field">
                     <label>Password</label>
-                    <input type="password"  name="password" id="password" placeholder="Password"/>
+                    <input type="password"  name="password" id="login_password" placeholder="Password"/>
                 </div>
 
                 <div className="ui fluid buttons">
