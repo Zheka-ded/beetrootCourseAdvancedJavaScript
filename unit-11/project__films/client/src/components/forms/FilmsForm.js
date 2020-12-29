@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import ReactImageFallback from 'react-image-fallback'
 import FormMessage from './FormMessage'
+import {Link, Redirect} from 'react-router-dom'
 
 const initialData = {
     title: '',
@@ -18,6 +19,7 @@ export default class FilmsForm extends Component {
         data: initialData,
         errors: {},
         isLoading: false,
+        isRedirect: false,
     }
 
     componentDidMount(){
@@ -49,13 +51,14 @@ export default class FilmsForm extends Component {
     handleSubmit = e => {
         e.preventDefault()
         const errors = this.validate(this.state.data)
-        // const errors = {}
 
         this.setState({errors})
 
         if(Object.keys(errors).length === 0) {
             this.setState({ isLoading: true })
+
             this.props.submit(this.state.data)
+                .then(() => this.setState( {isRedirect: true} ))
                 .catch(error => this.setState({
                     errors: error.response.data.errors,
                     isLoading: false,
@@ -93,11 +96,12 @@ export default class FilmsForm extends Component {
 
     render() {
 
-        const {data, errors, isLoading} = this.state;
+        const {data, errors, isLoading, isRedirect} = this.state;
         const formClassName = isLoading ? 'ui form loading' : 'ui form'
 
         return(
             <form className={formClassName} onSubmit={this.handleSubmit}>
+                {isRedirect && <Redirect to='/films' />}
                 <div className="ui grid">
                     <div className="twelve wide column">
                         <div className={errors.title ? 'field error' : 'field'}>
@@ -168,7 +172,7 @@ export default class FilmsForm extends Component {
                 <div className="ui fluid buttons">
                     <button className="ui button primary" type="submit">Save</button>
                     <div className="or" />
-                    <span className="ui button" onClick={this.props.hideAddForm}>Hide form</span>
+                    <Link to='/films' className="ui button">Hide form</Link>
                 </div>
             </form>
         )

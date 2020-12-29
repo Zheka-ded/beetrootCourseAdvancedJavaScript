@@ -1,125 +1,21 @@
 import React, {Component} from 'react'
-import FilmsList from './films'
-import {find, orderBy} from 'lodash'
-import api from '../api'
-import FilmsForm from './forms/FilmsForm'
+import {Route} from 'react-router-dom'
 import TopNavigation from './TopNavigation'
-// import {generate as id} from 'shortid'
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!
-import RegistrationForm from './forms/RegistrationForm'
-import LoginForm from './forms/LoginForm'
-// import { films } from '../data'
+import FilmsPage from './FilmsPage'
+import HomePage from './HomePage'
 
-// GET /api/films/ - get all films
-// POST /api/films/ - create film
-// PUT /api/films/_id - update film
-// DELETE /api/films/_id - delete film
 
 const AppContext = React.createContext()
 export {AppContext}
 
 export default class App extends Component {
-    state = {
-        films: [],
-        showAddForm: false,
-        selectedFilm: {}
-    }
-
-    selectFilmForEdit = selectedFilm => {
-        this.setState({
-            selectedFilm,
-            showAddForm: true,
-        })
-    }
-
-    saveFilm = film => film._id ? this.updateFilm(film) : this.addFilm(film)
-
-    addFilm = filmData => 
-        api.films.create(filmData).then(film =>
-            this.setState(({films, showAddForm}) => ({
-                films: this.sortFilms([...films, {...film}]),
-                showAddForm: false,
-            }))
-        )
-
-    updateFilm = filmData =>
-        api.films.update(filmData).then(film =>
-            this.setState(({films, showAddForm}) => ({
-                films: this.sortFilms(
-                    films.map(item => (item._id === film._id ? film : item))
-                ),
-                showAddForm: false,
-            }))
-        )
-
-    showAddForm = e => this.setState({
-        showAddForm: true,
-        selectedFilm: {}
-    })
-
-    hideAddForm = e => this.setState({
-        showAddForm: false,
-        selectedFilm: {}
-    })
-
-    componentDidMount() {
-        api.films.fetchAll().then(films => this.setState({
-            films: this.sortFilms(films),
-        }))
-    }
-
-    toggleFeatured = id => {
-        const film = find(this.state.films, {_id: id})
-
-        return this.updateFilm({...film, featured: !film.featured})
-    }
-
-    sortFilms = films => orderBy(films, ['featured', 'title'], ['desc', 'asc'])
-
-    deleteFilm = film => 
-        api.films.delete(film).then(() => 
-            this.setState(({films}) => ({
-                films: this.sortFilms(films.filter(item => item._id !== film._id))
-            }))
-        )
-
     render(){
-        const {films, showAddForm, selectedFilm} = this.state
-        const numCol = showAddForm ? 'ten' : 'sixteen'
-
         return(
-            <AppContext.Provider value={{
-                toggleFeatured: this.toggleFeatured,
-                editFilm: this.selectFilmForEdit,
-                deleteFilm: this.deleteFilm,
-            }}>
-
-                <div className="ui container mt-3">
-                    
-                    <RegistrationForm />
-                    <br/>
-                    <hr/>
-                    <br/>
-                    <LoginForm />
-
-                    <TopNavigation showAddForm={this.showAddForm} />
-
-                    <div className="ui stackable grid">
-                        {this.state.showAddForm && (
-                            <div className="six wide column">
-                                <FilmsForm hideAddForm={this.hideAddForm} 
-                                            submit={this.saveFilm}
-                                            film={selectedFilm} />
-                            </div>
-                        )}
-                        
-                        <div className={`${numCol} wide column`}>
-                            <FilmsList films={films} />
-                        </div>
-                    </div>
-
-                </div>
-            </AppContext.Provider>
+            <div className="ui container">
+                <TopNavigation />
+                <Route exact path='/' component={HomePage} />
+                <Route path='/films' component={FilmsPage} />
+            </div>
         )
     }
 }

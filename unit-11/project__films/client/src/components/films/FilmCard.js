@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react"
 import {AppContext} from '../App'
 import PropTypes from 'prop-types'
 import Featured from './Featured'
+import {Link} from 'react-router-dom'
 
 const FilmCard = ({film}) => {
     /**
@@ -61,9 +62,12 @@ const FilmCard = ({film}) => {
                     </div>
                 ) : (
                     <div className="ui two buttons">
-                        <span  className="ui green basic button"  onClick={() => editFilm(film)}>
+                        <Link to={`/films/edit/${film._id}`} className="ui green basic button">
                             <i className="ui icon edit" />
-                        </span>
+                        </Link>
+                        {/* <span  className="ui green basic button"  onClick={() => editFilm(film)}>
+                            <i className="ui icon edit" />
+                        </span> */}
                         <span className="ui red basic button" onClick={showConfirm}>
                             <i className="ui icon trash" />
                         </span>
